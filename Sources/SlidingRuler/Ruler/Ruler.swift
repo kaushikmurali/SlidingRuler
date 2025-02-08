@@ -31,7 +31,6 @@ import SwiftUI
 
 struct Ruler: View, Equatable {
     @Environment(\.slidingRulerStyle) private var style
-    let hasMarks: Bool
     
     let cells: [RulerCell]
     let step: CGFloat
