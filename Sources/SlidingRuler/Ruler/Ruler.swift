@@ -31,6 +31,7 @@ import SwiftUI
 
 struct Ruler: View, Equatable {
     @Environment(\.slidingRulerStyle) private var style
+    let hasMarks: Bool
     
     let cells: [RulerCell]
     let step: CGFloat
@@ -54,7 +55,7 @@ struct Ruler: View, Equatable {
     static func ==(lhs: Self, rhs: Self) -> Bool {
         lhs.step == rhs.step &&
         lhs.cells.count == rhs.cells.count &&
-        (!StaticSlidingRulerStyleEnvironment.hasMarks || lhs.markOffset == rhs.markOffset)
+        (!lhs.hasMarks || lhs.markOffset == rhs.markOffset)
     }
 }
 
