@@ -43,6 +43,8 @@ public struct SlidingRuler<V>: View where V: BinaryFloatingPoint, V.Stride: Bina
 
     @Environment(\.layoutDirection) private var layoutDirection
 
+    @Environment(\.slidingRulerStyle.hasMarks) private var hasMarks
+
     /// Bound value.
     @Binding private var controlValue: V
     /// Possible value range.
@@ -148,7 +150,7 @@ public struct SlidingRuler<V>: View where V: BinaryFloatingPoint, V.Stride: Bina
 
         return FlexibleWidthContainer {
             ZStack(alignment: .init(horizontal: .center, vertical: self.verticalCursorAlignment)) {
-                Ruler(cells: self.cells, step: self.step, markOffset: self.markOffset, bounds: self.bounds, formatter: self.formatter)
+                Ruler(cells: self.cells, step: self.step, markOffset: self.markOffset, bounds: self.bounds, formatter: self.formatter, hasMarks: self.hasMarks)
                     .equatable()
                     .animation(nil)
                     .modifier(InfiniteOffsetEffect(offset: renderedOffset, maxOffset: self.cellWidthOverflow))
