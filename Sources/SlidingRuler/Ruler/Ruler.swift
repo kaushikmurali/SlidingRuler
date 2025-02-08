@@ -51,11 +51,15 @@ struct Ruler: View, Equatable {
     private func configuration(forCell cell: RulerCell) -> SlidingRulerStyleConfiguation {
         return .init(mark: (cell.mark + markOffset) * step, bounds: bounds, step: step, formatter: formatter)
     }
+
+    func isEqual(to other: Ruler) -> Bool {
+        step == other.step &&
+        cells.count == other.cells.count &&
+        (!StaticSlidingRulerStyleEnvironment.hasMarks || markOffset == other.markOffset)
+    }
     
     static func ==(lhs: Self, rhs: Self) -> Bool {
-        lhs.step == rhs.step &&
-        lhs.cells.count == rhs.cells.count &&
-        (!lhs.hasMarks || lhs.markOffset == rhs.markOffset)
+        lhs.isEqual(to: rhs)
     }
 }
 
