@@ -51,10 +51,29 @@ struct Ruler: View, Equatable {
         return .init(mark: (cell.mark + markOffset) * step, bounds: bounds, step: step, formatter: formatter)
     }
 
+    // Move the equality check into a view modifier or computed property
     func isEqual(to other: Ruler) -> Bool {
-        step == other.step &&
-        cells.count == other.cells.count &&
-        (!StaticSlidingRulerStyleEnvironment.hasMarks || markOffset == other.markOffset)
+        // Create a view modifier to access environment values
+        struct EnvironmentReader: ViewModifier {
+            @Environment(\.slidingRulerStyle) private var style
+            let perform: (Bool) -> Void
+            
+            func body(content: Content) -> some View {
+                content.onAppear {
+                    // Use the environment value here
+                    let hasMarks = style.hasMarks
+                    perform(hasMarks)
+                }
+            }
+        }
+        
+        // Initial comparison without environment values
+        let baseEqual = step == other.step && cells.count == other.cells.count
+        
+        // Return a closure that will be evaluated with the proper environment context
+        return baseEqual && { hasMarks in
+            !hasMarks || markOffset == other.markOffset
+        }(style.hasMarks)
     }
     
     static func ==(lhs: Self, rhs: Self) -> Bool {
