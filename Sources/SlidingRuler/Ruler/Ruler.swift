@@ -31,13 +31,27 @@ import SwiftUI
 
 struct Ruler: View, Equatable {
     @Environment(\.slidingRulerStyle) private var style
-    @Environment(\.slidingRulerStyle.hasMarks) private var hasMarks
     
     let cells: [RulerCell]
     let step: CGFloat
     let markOffset: CGFloat
     let bounds: ClosedRange<CGFloat>
     let formatter: NumberFormatter?
+    let hasMarks: Bool // Add this as a parameter
+    
+    init(cells: [RulerCell], 
+         step: CGFloat, 
+         markOffset: CGFloat, 
+         bounds: ClosedRange<CGFloat>, 
+         formatter: NumberFormatter?,
+         hasMarks: Bool = true) { // Default to true or appropriate default value
+        self.cells = cells
+        self.step = step
+        self.markOffset = markOffset
+        self.bounds = bounds
+        self.formatter = formatter
+        self.hasMarks = hasMarks
+    }
     
     var body: some View {
         HStack(spacing: 0) {
@@ -62,6 +76,9 @@ struct Ruler: View, Equatable {
 struct Ruler_Previews: PreviewProvider {
     static var previews: some View {
         Ruler(cells: [.init(CGFloat(0))],
-              step: 1.0, markOffset: 0, bounds: -1...1, formatter: nil)
+              step: 1.0, 
+              markOffset: 0, 
+              bounds: -1...1, 
+              formatter: nil)
     }
 }
